@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">HouseOfCodeChat</string>
+
+    <!--Login activity strings-->
+    <string name="login_label">Login</string>
+    <string name="facebook_btn_txt">Facebook</string>
+    <string name="google_btn_txt">Google</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+
+    <!--Message activity strings-->
+    <string name="message_box_hint">Enter message</string>
+    <string name="message_box_button_send">Send</string>
+</resources>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "871086529848",
+    "firebase_url": "https://houseofcode-6583d.firebaseio.com",
+    "project_id": "houseofcode-6583d",
+    "storage_bucket": "houseofcode-6583d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871086529848:android:3e9512b6e133a4598275cd",
+        "android_client_info": {
+          "package_name": "com.pallesohn.houseofcodechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871086529848-9b7t0i6l421ipm229opnmdom497idms6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pallesohn.houseofcodechat",
+            "certificate_hash": "0ea00e18f0f1d69bac233ea1193ee1b4f7c3a1b1"
+          }
+        },
+        {
+          "client_id": "871086529848-3jqadqmiub53aiil0sgemva97svtk4fi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwJKURX4aSgXbPxHYtfntD-L6eOmBApaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871086529848-3jqadqmiub53aiil0sgemva97svtk4fi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="chat_rooms">
+        <item>Chat Room 1</item>
+        <item>Chat Room 2</item>
+        <item>Chat Room 3</item>
+        <item>Chat Room 4</item>
+        <item>Chat Room 5</item>
+    </string-array>
+</resources>
