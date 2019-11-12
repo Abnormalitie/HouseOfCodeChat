@@ -10,4 +10,7 @@
     <!--Message activity strings-->
     <string name="message_box_hint">Enter message</string>
     <string name="message_box_button_send">Send</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
