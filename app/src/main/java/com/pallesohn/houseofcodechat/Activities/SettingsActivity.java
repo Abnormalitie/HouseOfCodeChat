@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pallesohn.houseofcodechat.R;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -43,6 +45,8 @@ public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference mRootRef;
     private StorageReference userProfileImagesRef;
 
+    private ProgressDialog progressBar;
+
     private static final int galleryPick = 1;
 
     @Override
@@ -59,6 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
         userName = findViewById(R.id.set_user_name);
         userStatus = findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
+        progressBar = new ProgressDialog(this);
 
         userName.setVisibility(View.INVISIBLE);
 
@@ -98,16 +103,38 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if(requestCode == RESULT_OK) {
+                progressBar.setTitle("Uploading Image");
+                progressBar.setMessage("Please wait");
+                progressBar.setCanceledOnTouchOutside(false);
+                progressBar.show();
+
                 Uri resultUri = result.getUri();
 
-                StorageReference filePath = userProfileImagesRef.child(currentUserId + ".jpg");
+                final StorageReference filePath = userProfileImagesRef.child(currentUserId + ".jpg");
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         if(task.isSuccessful()) {
                             Toast.makeText(SettingsActivity.this, "Image saved uploaded", Toast.LENGTH_SHORT).show();
+
+                            final String downloadUrl = task.getResult().getMetadata().getReference().getDownloadUrl().toString();
+                            mRootRef.child("Users").child(currentUserId).child("image").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        progressBar.dismiss();
+                                        Toast.makeText(SettingsActivity.this, "Image saves succesfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        String message = task.getException().toString();
+                                        progressBar.dismiss();
+
+                                        Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                         } else {
                             String message = task.getException().toString();
+                            progressBar.dismiss();
 
                             Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
                         }
@@ -158,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                     userName.setText(retrieveUserName);
                     userStatus.setText(retrieveUserStatus);
-
+                    Picasso.get().load(retrieveProfilePicture).into(userProfileImage);
                 } else if((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
                     String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                     String retrieveUserStatus = dataSnapshot.child("status").getValue().toString();
