@@ -3,6 +3,7 @@ package com.pallesohn.houseofcodechat.Activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -46,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
     private StorageReference userProfileImagesRef;
 
     private ProgressDialog progressBar;
+    private Toolbar mSettingsToolbar;
 
     private static final int galleryPick = 1;
 
@@ -64,6 +66,11 @@ public class SettingsActivity extends AppCompatActivity {
         userStatus = findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
         progressBar = new ProgressDialog(this);
+        mSettingsToolbar = findViewById(R.id.settings_toolbar);
+        setSupportActionBar(mSettingsToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Settings");
 
         userName.setVisibility(View.INVISIBLE);
 
@@ -154,12 +161,12 @@ public class SettingsActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(setStatus)) {
             Toast.makeText(this, "Enter status", Toast.LENGTH_SHORT).show();
         } else {
-            HashMap<String, String> profileMap = new HashMap<>();
+            HashMap<String, Object> profileMap = new HashMap<>();
             profileMap.put("uid", currentUserId);
             profileMap.put("name", setUsername);
             profileMap.put("status", setStatus);
 
-            mRootRef.child("Users").child(currentUserId).setValue(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            mRootRef.child("Users").child(currentUserId).updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()) {
