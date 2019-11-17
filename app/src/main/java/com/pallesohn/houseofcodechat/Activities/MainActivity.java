@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Not working (Auto login)
     private void verifyUserExistence() {
         String currentUserId = mAuth.getCurrentUser().getUid();
 
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Request groups from firebase
     private void RequestNewGroup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog);
         builder.setTitle("Enter Group name");
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    //Create and upload groups to Firebase
     private void CreateNewGroup(final String groupName) {
         mRootref.child("Groups").child(groupName).setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

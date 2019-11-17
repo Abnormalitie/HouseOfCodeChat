@@ -151,6 +151,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    //Upload status and name from the settings menu to firebase
     private void updateSettings() {
         String setUsername = userName.getText().toString();
         String setStatus = userStatus.getText().toString();
@@ -181,6 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    //Retrieve the name, status and profile image from firebase
     private void retrieveUserInformation() {
         mRootRef.child("Users").child(currentUserId).addValueEventListener(new ValueEventListener() {
             @Override

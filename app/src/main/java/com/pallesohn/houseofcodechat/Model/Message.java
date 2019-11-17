@@ -1,6 +1,9 @@
 package com.pallesohn.houseofcodechat.Model;
 
 public class Message {
+
+    /* Model class for messages */
+
     private String from, message, type, time, date, name;
 
     public Message() {

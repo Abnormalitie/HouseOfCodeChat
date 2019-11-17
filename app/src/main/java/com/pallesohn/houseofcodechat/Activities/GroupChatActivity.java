@@ -175,6 +175,8 @@ public class GroupChatActivity extends AppCompatActivity {
             if(!checker.equals("image")) {
 
             } else if (checker.equals("image")) {
+
+                //Upload image from gallery to firebase
                 StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Image Files");
 
                 final String groupKey = mGroupsRef.push().getKey();
@@ -232,6 +234,8 @@ public class GroupChatActivity extends AppCompatActivity {
         }
     }
 
+
+    //upload text from the Edittext to firebase
     private void SendMessage() {
         String messageText = inputMessage.getText().toString();
 

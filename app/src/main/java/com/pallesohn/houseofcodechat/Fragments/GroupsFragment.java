@@ -72,6 +72,8 @@ public class GroupsFragment extends Fragment {
         return groupsView;
     }
 
+
+    //Retrieve and display the group names from firebase
     private void RetrieveAndDisplayGroups() {
         groupRef.addValueEventListener(new ValueEventListener() {
             @Override
