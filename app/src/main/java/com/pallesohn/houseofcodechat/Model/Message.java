@@ -1,15 +1,42 @@
 package com.pallesohn.houseofcodechat.Model;
 
 public class Message {
-    private String from, message, type;
+    private String from, message, type, time, date, name;
 
     public Message() {
     }
 
-    public Message(String from, String message, String type) {
+    public Message(String from, String message, String type, String time, String date, String name) {
         this.from = from;
         this.message = message;
         this.type = type;
+        this.time = time;
+        this.date = date;
+        this.name = name;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFrom() {

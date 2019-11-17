@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int GOOGLE_SIGN = 123;
 
     private static FirebaseAuth mAuth;
-    private DatabaseReference mRootRef;
+    private DatabaseReference mUsersRef;
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mUsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder().requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
 
@@ -65,11 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         googleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mAuth.getCurrentUser() != null) {
-                    sendUserToMainActivity();
-                } else {
-                    SignInGoogle();
-                }
+                SignInGoogle();
             }
         });
     }
@@ -107,7 +103,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     Log.d("TAG", "Signin success");
-                    sendUserToMainActivity();
+
+                    String currentUserId = mAuth.getCurrentUser().getUid();
+                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                    mUsersRef.child(currentUserId).child("device_token").setValue(deviceToken).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                sendUserToMainActivity();
+                            }
+                        }
+                    });
                 } else {
                     Log.d("TAG", "Signin failed", task.getException());
 

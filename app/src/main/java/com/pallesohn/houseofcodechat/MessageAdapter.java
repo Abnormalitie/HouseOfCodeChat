@@ -1,9 +1,12 @@
 package com.pallesohn.houseofcodechat;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,8 +62,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 if(dataSnapshot.exists()) {
                     if(dataSnapshot.hasChild("image")) {
                         String receiverImage = dataSnapshot.child("image").getValue().toString();
+                        String receiverName = dataSnapshot.child("name").getValue().toString();
 
                         Picasso.get().load(receiverImage).placeholder(R.drawable.profile_image).into(holder.receiverProfileImage);
+                        holder.receiverUserName.setText(receiverName);
                     }
                 }
             }
@@ -71,24 +76,34 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
         });
 
-        if(fromMessageType.equals("text")) {
-            holder.receiverMessageText.setVisibility(View.INVISIBLE);
-            holder.receiverProfileImage.setVisibility(View.INVISIBLE);
-            holder.receiverUserName.setVisibility(View.INVISIBLE);
-            holder.senderMessageText.setVisibility(View.VISIBLE);
+        holder.receiverMessageText.setVisibility(View.GONE);
+        holder.receiverProfileImage.setVisibility(View.GONE);
+        holder.receiverUserName.setVisibility(View.GONE);
+        holder.senderMessageText.setVisibility(View.GONE);
+        holder.messageSenderImage.setVisibility(View.GONE);
+        holder.messageReceiverImage.setVisibility(View.GONE);
 
+        if(fromMessageType.equals("text")) {
             if(fromUserID.equals(messageSenderID)) {
+                holder.senderMessageText.setVisibility(View.VISIBLE);
                 holder.senderMessageText.setBackgroundResource(R.drawable.rounded_rectangle_blue);
-                holder.senderMessageText.setText(message.getMessage());
+                holder.senderMessageText.setText(message.getMessage() + "\n" + message.getTime() + "\n" + message.getDate());
             } else {
-                holder.senderMessageText.setVisibility(View.INVISIBLE);
                 holder.receiverUserName.setVisibility(View.VISIBLE);
                 holder.receiverMessageText.setVisibility(View.VISIBLE);
                 holder.receiverProfileImage.setVisibility(View.VISIBLE);
 
                 holder.receiverMessageText.setBackgroundResource(R.drawable.rounded_rectangle_orange);
-                holder.receiverMessageText.setText(message.getMessage());
-                holder.receiverUserName.setText(message.getFrom());
+                holder.receiverMessageText.setText(message.getMessage() + "\n" + message.getTime() + "\n" + message.getDate());
+            }
+        } else if(fromMessageType.equals("image")) {
+            if(fromUserID.equals(messageSenderID)) {
+                holder.messageSenderImage.setVisibility(View.VISIBLE);
+                Picasso.get().load(message.getMessage()).into(holder.messageSenderImage);
+            } else {
+                holder.receiverProfileImage.setVisibility(View.VISIBLE);
+                holder.messageReceiverImage.setVisibility(View.VISIBLE);
+                Picasso.get().load(message.getMessage()).into(holder.messageReceiverImage);
             }
         }
     }
@@ -102,6 +117,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         public TextView senderMessageText, receiverMessageText, receiverUserName;
         public CircleImageView receiverProfileImage;
+        public ImageView messageSenderImage, messageReceiverImage;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,6 +126,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             receiverMessageText = itemView.findViewById(R.id.receiver_message_text);
             receiverProfileImage = itemView.findViewById(R.id.message_profile_image);
             receiverUserName = itemView.findViewById(R.id.receiver_user_name);
+            messageSenderImage = itemView.findViewById(R.id.message_sender_image_view);
+            messageReceiverImage = itemView.findViewById(R.id.message_receiver_image_view);
         }
     }
 }
